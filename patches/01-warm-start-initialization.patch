@@ -1,0 +1,84 @@
+diff --color -ruN p0/convergenceInit.H p01/convergenceInit.H
+--- a/src/convergenceInit.H	2026-11-25 22:02:01
++++ b/src/convergenceInit.H	2026-11-25 22:02:01
+@@ -15,6 +15,8 @@
+ 
+ dictionary ContinuationDict(optProperties.subDict("continuation"));
+ 
++// EngiBench patch 01: optional (warm-ready-3d made it mandatory); 0 keeps legacy behaviour.
++label NoContinuation(ContinuationDict.lookupOrDefault<label>("NoContinuation", 0));
+ label n_beginning(readLabel(ContinuationDict.lookup("n_beginning")));label maxIterAtThisLevel(n_beginning);
+ label n_levels(readLabel(ContinuationDict.lookup("n_levels")));
+ label n_transitionItersAtEachLevel(readLabel(ContinuationDict.lookup("n_transitionItersAtEachLevel")));
+diff --color -ruN p0/createFields.H p01/createFields.H
+--- a/src/createFields.H	2026-11-25 22:02:01
++++ b/src/createFields.H	2026-11-25 22:02:01
+@@ -33,32 +33,33 @@
+ Switch test_area(optProperties.lookup("test_area"));
+ 
+ Info<< "Reading pseudo-density field\n" << endl;
+-volScalarField xp
++volScalarField xh
+ (
+     IOobject
+     (
+-        "xp",
++        "xh",
+         runTime.timeName(),
+         mesh,
+-        IOobject::NO_READ,
++        IOobject::READ_IF_PRESENT,
+         IOobject::NO_WRITE
+     ),
+     mesh,
+     scalar(voluse),
+     zeroGradientFvPatchScalarField::typeName
+ );
+-volScalarField xh
++// EngiBench patch 01: initialize the MMA variables from a supplied 0/xh (warm-ready-3d order
++// xh -> xp -> x). Value-identical to the original order when no 0/xh is supplied.
++volScalarField xp
+ (
+     IOobject
+     (
+-        "xh",
++        "xp",
+         runTime.timeName(),
+         mesh,
+-        IOobject::READ_IF_PRESENT,
++        IOobject::NO_READ,
+         IOobject::NO_WRITE
+     ),
+-    mesh,
+-    scalar(voluse),
++    xh,
+     zeroGradientFvPatchScalarField::typeName
+ );
+ volScalarField x(xp);
+diff --color -ruN p0/update.H p01/update.H
+--- a/src/update.H	2026-11-25 22:02:01
++++ b/src/update.H	2026-11-25 22:02:01
+@@ -60,6 +60,11 @@
+    qu=qU_overallList[0];
+    // qd=qD_overallList[0];
+    del=Heaviside_overallList[0];
++   if (NoContinuation==1){
++      alphaMax.value()=alphaMax_to;
++      qu = qU_to;
++      del = Heaviside_to;
++   }
+ } 
+ else if (currentLevel < n_levels){
+    if(iterAtThisLevel==0){//we need to initialize the ramps and stuff
+@@ -75,6 +80,11 @@
+    qu=qU_transitionAtThisLevelList[Foam::min(iterAtThisLevel,n_transitionItersAtEachLevel-1)];
+    // qd=qD_transitionAtThisLevelList[Foam::min(iterAtThisLevel,n_transitionItersAtEachLevel-1)];
+    del=Heaviside_transitionAtThisLevelList[Foam::min(iterAtThisLevel,n_transitionItersAtEachLevel-1)];
++   if (NoContinuation==1){
++      alphaMax.value()=alphaMax_to;
++      qu = qU_to;
++      del = Heaviside_to;
++   }
+ } else {//currentLevel>n_levels so, we're done!
+    //finishparallelrun
+    // #include "finalize.H"//程序终止，delete变量

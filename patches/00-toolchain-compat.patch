@@ -1,0 +1,22 @@
+--- a/src/MTO_TFS.C	2026-11-25 21:57:29
++++ b/src/MTO_TFS.C	2026-11-25 22:02:01
+@@ -1,12 +1,18 @@
+ //Author: Yu Minghao    Updated: 2021.8.28 
+ #include<unistd.h>
+ static char help[] = "topology optimization of thermal-fluid-structural problem\n";
++// EngiBench patch 00 (toolchain compatibility, no numerical change): gcc >= 9 no longer pulls in
++// <vector>/<numeric> transitively (update.H, convergenceCheck.H use std::vector/std::accumulate),
++// and PETSc's headers (via MMA.h) must precede OpenFOAM's, otherwise pow() is ambiguous in
++// petscmath.h. The MTO2D image applies the same include order.
++#include <vector>
++#include <numeric>
++#include <MMA.h>
+ #include "fvCFD.H"
+ #include "singlePhaseTransportModel.H"
+ #include "turbulentTransportModel.H"
+ #include "simpleControl.H"
+ #include "fvOptions.H"//
+-#include <MMA.h>
+ #include <diff.c>
+ #include <continuationFuncs.H>
+ #include <helperFcns.c>

@@ -1,0 +1,13 @@
+
+adjointOutletPressureHeat/adjointOutletPressureHeatFvPatchScalarField.C
+adjointOutletVelocityHeat/adjointOutletVelocityHeatFvPatchVectorField.C
+
+adjointOutletPressurePower/adjointOutletPressurePowerFvPatchScalarField.C
+adjointOutletVelocityPower/adjointOutletVelocityPowerFvPatchVectorField.C
+
+tractionDisplacement/tractionDisplacementFvPatchVectorField.C
+
+adjointHeatFluxSurface/adjointHeatFluxSurfaceFvPatchScalarField.C
+
+MTO_TFS.C
+EXE = ./EXEC

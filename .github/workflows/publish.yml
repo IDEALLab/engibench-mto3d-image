@@ -1,0 +1,73 @@
+---
+name: Publish
+
+# Builds the MTO3D runtime image on top of the digest-pinned MTO2D runtime and, on request,
+# publishes it to the IDEALLab GHCR namespace. Every run executes the structural smoke test
+# and the numerical release gate: a frozen evaluation of the golden design, run exactly as
+# EngiBench's MTO3D.simulate() runs it (100 iterations), bitwise identical to the record that the
+# legacy MTO_GEN.sif toolchain, the base-image toolchain and EngiBench produced, plus the first 3
+# legacy optimizer iterations text-identical to the 2022 golden histories. New GHCR packages are
+# private: make the package public afterwards, verify an anonymous pull, and pin the printed
+# digest in EngiBench's MTO3D.container_id.
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Push the built image to GHCR
+        type: boolean
+        default: false
+      confirm_redistribution_rights:
+        description: Redistribution rights for the vendored solver source are resolved
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        run: ./build_image.sh engibench-mto3d:ci
+
+      - name: Structural smoke test
+        run: docker run --rm --platform linux/amd64 engibench-mto3d:ci mto3d-source-smoke
+
+      - name: Numerical release gate (bitwise frozen evaluation + 3 golden iterations, 16 ranks)
+        run: docker run --rm --platform linux/amd64 engibench-mto3d:ci mto3d-reference-check
+
+      - name: Log in to GHCR
+        if: inputs.publish && inputs.confirm_redistribution_rights
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish and report the digest
+        if: inputs.publish && inputs.confirm_redistribution_rights
+        run: |
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          remote="ghcr.io/${owner}/engibench-mto3d"
+          docker tag engibench-mto3d:ci "${remote}:v0"
+          docker tag engibench-mto3d:ci "${remote}:v0-${GITHUB_SHA}"
+          docker push "${remote}:v0-${GITHUB_SHA}"
+          docker push "${remote}:v0"
+          digest=$(docker buildx imagetools inspect "${remote}:v0" --format '{{.Manifest.Digest}}')
+          echo "Published ${remote}@${digest}"
+          {
+            echo "## Published image"; echo; echo '```'; echo "${remote}@${digest}"; echo '```'; echo
+            echo "Make the package public in the organization's package settings, verify an"
+            echo "anonymous pull of the digest, then pin it in EngiBench's MTO3D.container_id."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,0 +1,72 @@
+diff --color -ruN p01/MTO_TFS.C p012/MTO_TFS.C
+--- a/src/MTO_TFS.C	2026-11-25 22:02:01
++++ b/src/MTO_TFS.C	2026-11-25 22:02:01
+@@ -43,11 +43,21 @@
+         #include "NS.H"//NS方程求解
+         #include "HeatTransfer.H"//传热方程求解
+         // #include "LinearElasticity.H"//平衡方程求解
++        if (updateDesign)
++        {
+         #include "AdjHeatTransfer.H"//伴随能量方程(of 平均温度)
+         #include "AdjNS_HT.H"//伴随NS方程(of 平均温度)
+         #include "AdjNS_FF.H"//伴随能量方程(of 能量耗散)
++        }
+         #include "costfunction.H"//计算目标和约束函数值             
++        if (updateDesign)
++        {
+         #include "sensitivity.H"//灵敏度分析及MMA
++        }
++        else
++        {
++        #include "frozenStatus.H"
++        }
+         runTime.write();
+         }
+         
+diff --color -ruN p01/createFields.H p012/createFields.H
+--- a/src/createFields.H	2026-11-25 22:02:01
++++ b/src/createFields.H	2026-11-25 22:02:01
+@@ -31,6 +31,9 @@
+ Switch solid_area(optProperties.lookup("solid_area"));
+ Switch fluid_area(optProperties.lookup("fluid_area"));
+ Switch test_area(optProperties.lookup("test_area"));
++// EngiBench patch 02: "updateDesign no" evaluates the supplied design without changing it
++// (no adjoints, sensitivities, MMA or filter). Default yes keeps the legacy optimizer.
++Switch updateDesign(optProperties.lookupOrDefault<Switch>("updateDesign", true));
+ 
+ Info<< "Reading pseudo-density field\n" << endl;
+ volScalarField xh
+diff --color -ruN p01/frozenStatus.H p012/frozenStatus.H
+--- a/src/frozenStatus.H	1970-01-01 01:00:00
++++ b/src/frozenStatus.H	2026-11-25 22:02:01
+@@ -0,0 +1,30 @@
++// EngiBench patch 02: machine-readable record of a frozen evaluation (updateDesign no).
++// The primal NS loop above stops when both initial residuals reach tol_U/tol_p or after NSmaxIter
++// passes; a frozen evaluation is valid only if it converged. Objectives at full precision.
++if (Pstream::master())
++{
++    std::ofstream status("frozen_status.txt");
++    status.precision(17);
++    status << "iteration " << opt << "\n"
++           << "mean_temperature " << MeanT << "\n"
++           << "power_dissipation " << PowerDiss << "\n"
++           << "volume_residual " << V << "\n"
++           << "ns_passes " << iterNS << "\n"
++           << "ns_max_iter " << maxIterNS << "\n"
++           << "initial_residual_U " << initialResidual_U << "\n"
++           << "initial_residual_p " << initialResidual_p << "\n"
++           << "ns_converged "
++           << ((initialResidual_U <= convergenceTolerance_U && initialResidual_p <= convergenceTolerance_p) ? 1 : 0)
++           << "\n"
++           << "qu " << qu << "\n"
++           << "alphaMax " << alphaMax.value() << "\n"
++           << "elapsed_clock_time " << runTime.elapsedClockTime() << "\n";
++}
++// A flow that used all NSmaxIter passes without converging makes the evaluation invalid: stop now
++// instead of repeating that solve in each remaining iteration. Converged iterations never stop here.
++if (!(initialResidual_U <= convergenceTolerance_U && initialResidual_p <= convergenceTolerance_p))
++{
++    Info<< "EngiBench frozen evaluation: flow not converged within " << maxIterNS
++        << " SIMPLE passes; stopping." << endl;
++    runTime.writeAndEnd();
++}

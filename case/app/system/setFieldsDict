@@ -1,0 +1,91 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+//First step of patching the fields: setting T to 0 everywhere
+defaultFieldValues ( volScalarFieldValue xh 1.0 );
+
+
+
+// ************************************************************************* //
+regions (
+boxToCell { box (-0.005 0.0001 0.0001) (0.0 0.00095 0.0049) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.005 0.00095 0.0001) (0.0 0.0011 0.0049) ; fieldValues ( volScalarFieldValue xh 1 ) ; } 
+boxToCell { box (-0.004959375 0.00095 0.00017800000000000004) (-0.0047281250000000006 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004959375 0.00095 0.001378) (-0.0047281250000000006 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004959375 0.00095 0.0025780000000000004) (-0.0047281250000000006 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004959375 0.00095 0.0037780000000000005) (-0.0047281250000000006 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004646875 0.00095 0.0007779999999999999) (-0.004415625 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004646875 0.00095 0.001978) (-0.004415625 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004646875 0.00095 0.003178) (-0.004415625 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004646875 0.00095 0.004378) (-0.004415625 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004334375 0.00095 0.00017800000000000004) (-0.004103125 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004334375 0.00095 0.001378) (-0.004103125 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004334375 0.00095 0.0025780000000000004) (-0.004103125 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004334375 0.00095 0.0037780000000000005) (-0.004103125 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004021874999999999 0.00095 0.0007779999999999999) (-0.003790625 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004021874999999999 0.00095 0.001978) (-0.003790625 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004021874999999999 0.00095 0.003178) (-0.003790625 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.004021874999999999 0.00095 0.004378) (-0.003790625 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003709375 0.00095 0.00017800000000000004) (-0.0034781250000000003 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003709375 0.00095 0.001378) (-0.0034781250000000003 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003709375 0.00095 0.0025780000000000004) (-0.0034781250000000003 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003709375 0.00095 0.0037780000000000005) (-0.0034781250000000003 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0033968749999999997 0.00095 0.0007779999999999999) (-0.0031656250000000005 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0033968749999999997 0.00095 0.001978) (-0.0031656250000000005 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0033968749999999997 0.00095 0.003178) (-0.0031656250000000005 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0033968749999999997 0.00095 0.004378) (-0.0031656250000000005 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003084375 0.00095 0.00017800000000000004) (-0.002853125 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003084375 0.00095 0.001378) (-0.002853125 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003084375 0.00095 0.0025780000000000004) (-0.002853125 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.003084375 0.00095 0.0037780000000000005) (-0.002853125 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0027718749999999996 0.00095 0.0007779999999999999) (-0.0025406250000000003 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0027718749999999996 0.00095 0.001978) (-0.0025406250000000003 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0027718749999999996 0.00095 0.003178) (-0.0025406250000000003 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0027718749999999996 0.00095 0.004378) (-0.0025406250000000003 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002459375 0.00095 0.00017800000000000004) (-0.002228125 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002459375 0.00095 0.001378) (-0.002228125 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002459375 0.00095 0.0025780000000000004) (-0.002228125 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002459375 0.00095 0.0037780000000000005) (-0.002228125 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002146875 0.00095 0.0007779999999999999) (-0.001915625 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002146875 0.00095 0.001978) (-0.001915625 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002146875 0.00095 0.003178) (-0.001915625 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.002146875 0.00095 0.004378) (-0.001915625 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001834375 0.00095 0.00017800000000000004) (-0.001603125 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001834375 0.00095 0.001378) (-0.001603125 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001834375 0.00095 0.0025780000000000004) (-0.001603125 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001834375 0.00095 0.0037780000000000005) (-0.001603125 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001521875 0.00095 0.0007779999999999999) (-0.0012906249999999999 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001521875 0.00095 0.001978) (-0.0012906249999999999 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001521875 0.00095 0.003178) (-0.0012906249999999999 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.001521875 0.00095 0.004378) (-0.0012906249999999999 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0012093750000000002 0.00095 0.00017800000000000004) (-0.000978125 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0012093750000000002 0.00095 0.001378) (-0.000978125 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0012093750000000002 0.00095 0.0025780000000000004) (-0.000978125 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0012093750000000002 0.00095 0.0037780000000000005) (-0.000978125 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0008968750000000001 0.00095 0.0007779999999999999) (-0.000665625 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0008968750000000001 0.00095 0.001978) (-0.000665625 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0008968750000000001 0.00095 0.003178) (-0.000665625 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.0008968750000000001 0.00095 0.004378) (-0.000665625 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000584375 0.00095 0.00017800000000000004) (-0.000353125 0.0011 0.000622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000584375 0.00095 0.001378) (-0.000353125 0.0011 0.001822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000584375 0.00095 0.0025780000000000004) (-0.000353125 0.0011 0.0030220000000000004) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000584375 0.00095 0.0037780000000000005) (-0.000353125 0.0011 0.004222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000271875 0.00095 0.0007779999999999999) (-4.0625000000000005e-05 0.0011 0.001222) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000271875 0.00095 0.001978) (-4.0625000000000005e-05 0.0011 0.002422) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000271875 0.00095 0.003178) (-4.0625000000000005e-05 0.0011 0.003622) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+boxToCell { box (-0.000271875 0.00095 0.004378) (-4.0625000000000005e-05 0.0011 0.004822) ; fieldValues ( volScalarFieldValue xh 0 ) ; } 
+);
