@@ -7,6 +7,7 @@ output_image=${1:-engibench-mto3d:local}
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 # shellcheck source=pins.env
 source "$here/pins.env"
+[[ "$BASE_IMAGE" == *@sha256:* ]] || { echo "BASE_IMAGE must be pinned by digest: $BASE_IMAGE" >&2; exit 1; }
 
 command -v docker >/dev/null && docker buildx version >/dev/null 2>&1 || {
     echo "Docker with Buildx is required." >&2; exit 1; }
@@ -35,6 +36,7 @@ docker buildx build \
     --load \
     --file "$here/Dockerfile" \
     --build-arg "BASE_IMAGE=$BASE_IMAGE" \
+    --build-arg "BASE_IMAGE_DIGEST=${BASE_IMAGE##*@}" \
     --build-arg "MTO3D_CASE_MANIFEST_SHA256=$case_manifest_sha256" \
     --build-arg "MTO3D_PATCHES_SHA256=$patches_sha256" \
     --build-arg "MTO3D_RECIPE_REVISION=$revision" \

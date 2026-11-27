@@ -11,6 +11,7 @@ ARG BASE_IMAGE=ghcr.io/ideallab/engibench-mto2d@sha256:2887a5c8eaa3fba2d27381887
 FROM --platform=linux/amd64 ${BASE_IMAGE}
 
 ARG BASE_IMAGE
+ARG BASE_IMAGE_DIGEST
 ARG MTO3D_CASE_MANIFEST_SHA256
 ARG MTO3D_PATCHES_SHA256
 ARG MTO3D_RECIPE_REVISION
@@ -49,11 +50,13 @@ LABEL org.opencontainers.image.title="EngiBench MTO3D runtime" \
       org.opencontainers.image.description="MTO3D OpenFOAM thermal-fluid topology-optimization solver on the pinned MTO2D runtime" \
       org.opencontainers.image.licenses="${IMAGE_LICENSES}" \
       org.opencontainers.image.source="https://github.com/IDEALLab/engibench-mto3d-image" \
+      org.opencontainers.image.documentation="https://engibench.ethz.ch/problems/mto3d/" \
       org.opencontainers.image.vendor="IDEALLab" \
       org.opencontainers.image.version="v0" \
       org.opencontainers.image.revision="${MTO3D_RECIPE_REVISION}" \
       org.opencontainers.image.mto3d.recipe-tree-state="${MTO3D_RECIPE_TREE_STATE}" \
       org.opencontainers.image.base.name="${BASE_IMAGE}" \
+      org.opencontainers.image.base.digest="${BASE_IMAGE_DIGEST}" \
       org.opencontainers.image.mto3d.case-manifest.sha256="${MTO3D_CASE_MANIFEST_SHA256}" \
       org.opencontainers.image.mto3d.patches.sha256="${MTO3D_PATCHES_SHA256}"
 
