@@ -2,7 +2,7 @@
 
 Build recipe for the OpenFOAM solver image behind the [EngiBench](https://github.com/IDEALLab/EngiBench)
 `MTO3D` problem. EngiBench pins the published image by digest in `MTO3D.container_id`, the same way
-`MTO2D` pins `ghcr.io/ideallab/engibench-mto2d`. Intended package: `ghcr.io/ideallab/engibench-mto3d`.
+`MTO2D` pins `ghcr.io/ideallab/engibench-mto2d`. Published as `ghcr.io/ideallab/engibench-mto3d`.
 
 ## Using the image
 
